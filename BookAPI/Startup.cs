@@ -12,7 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-
+using BookAPI.Repositories;
 namespace BookAPI
 {
     public class Startup
@@ -27,6 +27,7 @@ namespace BookAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IBookRepository, BookRepository>();
             services.AddDbContext<BookContext>(o => o.UseSqlite("Data source=books.db"));
             services.AddControllers();
         }
