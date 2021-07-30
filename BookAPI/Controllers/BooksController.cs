@@ -30,5 +30,18 @@ namespace BookAPI.Controllers
         {
             return await _bookRepository.Get(Id);
         }
+
+        [HttpPost]
+        public async Task<ActionResult<Book>> PostBooks([FromBody] Book book)
+        {
+            var newBook = await _bookRepository.Create(book);
+            return CreatedAtAction(nameof(GetBooks), new { id = newBook.Id }, newBook);
+        }
+
+        [HttpDelete("{id}")]
+        public async void DeleteBooks(int Id)
+        {
+             await _bookRepository.Delete(Id);
+        }
     }
 }

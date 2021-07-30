@@ -2,7 +2,8 @@
 using System.Threading.Tasks;
 using BookAPI.Models;
 using Microsoft.EntityFrameworkCore;
-
+using System.Linq;
+using System.Collections.Generic;
 namespace BookAPI.Repositories
 {
     public class BookRepository : IBookRepository
