@@ -25,6 +25,10 @@ namespace BookAPI.Controllers
             return (IEnumerable<Book>)await _bookRepository.Get();
         }
 
-
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Book>> GetBooks(int Id)
+        {
+            return await _bookRepository.Get(Id);
+        }
     }
 }
