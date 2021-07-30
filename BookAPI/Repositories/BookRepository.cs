@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using BookAPI.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookAPI.Repositories
 {
@@ -12,29 +13,35 @@ namespace BookAPI.Repositories
             _contesxt = context;
         }
 
-        Task<Book> IBookRepository.Create(Book book)
+        public async Task<Book> Create(Book book)
         {
-            throw new NotImplementedException();
+            _contesxt.Books.Add(book);
+            await _contesxt.SaveChangesAsync();
+
+            return book;
         }
 
-        Task IBookRepository.Delete(int Id)
+        public async Task Delete(int Id)
         {
-            throw new NotImplementedException();
+            var bookToDelete = await _contesxt.Books.FindAsync(Id);
+            _contesxt.Books.Remove(bookToDelete);
+            await _contesxt.SaveChangesAsync();
         }
 
-        Task<IEquatable<Book>> IBookRepository.Get()
+        public async Task<IEquatable<Book>> Get()
         {
-            throw new NotImplementedException();
+            return (IEquatable<Book>)await _contesxt.Books.ToListAsync();
         }
 
-        Task<Book> IBookRepository.Get(int Id)
+        public async Task<Book> Get(int Id)
         {
-            throw new NotImplementedException();
+            return await _contesxt.Books.FindAsync(Id);
         }
 
-        Task IBookRepository.Update(Book book)
+        public async Task Update(Book book)
         {
-            throw new NotImplementedException();
+            _contesxt.Entry(book).State = EntityState.Modified;
+            await _contesxt.SaveChangesAsync();
         }
     }
 }
