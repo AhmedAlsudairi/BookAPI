@@ -29,9 +29,9 @@ namespace BookAPI.Repositories
             await _contesxt.SaveChangesAsync();
         }
 
-        public async Task<IEquatable<Book>> Get()
+        public async Task<IEnumerable<Book>> Get()
         {
-            return (IEquatable<Book>)await _contesxt.Books.ToListAsync();
+            return await _contesxt.Books.ToListAsync();
         }
 
         public async Task<Book> Get(int Id)

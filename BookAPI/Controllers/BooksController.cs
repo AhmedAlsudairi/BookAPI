@@ -22,7 +22,7 @@ namespace BookAPI.Controllers
         [HttpGet]
         public async Task<IEnumerable<Book>> GetBooks()
         {
-            return (IEnumerable<Book>)await _bookRepository.Get();
+            return await _bookRepository.Get();
         }
 
         [HttpGet("{id}")]
@@ -38,10 +38,30 @@ namespace BookAPI.Controllers
             return CreatedAtAction(nameof(GetBooks), new { id = newBook.Id }, newBook);
         }
 
-        [HttpDelete("{id}")]
-        public async void DeleteBooks(int Id)
+        [HttpPut]
+        public async Task<ActionResult<Book>> UpdateBooks(int id, [FromBody] Book book)
         {
-             await _bookRepository.Delete(Id);
+            if(id != book.Id)
+            {
+                return BadRequest();
+            }
+
+            await _bookRepository.Update(book);
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteBooks(int Id)
+        {
+            var bookToDelete = await _bookRepository.Get(Id);
+            if(bookToDelete == null)
+            {
+                return NotFound();
+            }
+
+             await _bookRepository.Delete(bookToDelete.Id);
+            return NoContent();
         }
     }
 }
